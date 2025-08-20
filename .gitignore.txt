@@ -1,0 +1,47 @@
+# ------------------------
+# OS-specific
+# ------------------------
+.DS_Store
+Thumbs.db
+
+# ------------------------
+# Eclipse
+# ------------------------
+.classpath
+.project
+.settings/
+bin/
+
+# ------------------------
+# Maven build
+# ------------------------
+target/
+
+# ------------------------
+# Logs and Reports
+# ------------------------
+*.log
+logs/
+test-output/        # TestNG reports
+surefire-reports/   # Maven Surefire plugin reports
+allure-results/     # Allure test results
+allure-report/
+cucumber-reports/
+extent-reports/
+
+# ------------------------
+# Temp files
+# ------------------------
+*.tmp
+*.swp
+*.swo
+
+# ------------------------
+# WebDrivers (if kept locally)
+# ------------------------
+chromedriver.exe
+geckodriver.exe
+msedgedriver.exe
+chromedriver
+geckodriver
+msedgedriver
