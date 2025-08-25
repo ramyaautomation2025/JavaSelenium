@@ -1,0 +1,9 @@
+<suite name="ExplorationTest">
+	<test name="FirstTest">
+	<parameter name="username" value="Username1"/>
+	<parameter name="password" value="Pass1"/>
+		<classes>
+			<class name="ExplorationTest.FirstTest" />
+		</classes>
+	</test>
+</suite>
