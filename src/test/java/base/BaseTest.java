@@ -7,6 +7,7 @@ import org.testng.annotations.BeforeSuite;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -34,9 +35,16 @@ public class BaseTest {
 	
 	@BeforeMethod
 	public void setUp() {
-		
+		ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new"); // run without UI (needed in CI)
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--remote-allow-origins=*");
+        options.addArguments("--user-data-dir=/tmp/unique-profile-" + System.currentTimeMillis());
+
 		Log.info("Starting WebDriver...");
-		driver = new ChromeDriver();
+		driver = new ChromeDriver(options);
 		driver.manage().window().maximize();
 		Log.info("Navigating to URL...");
 		driver.get("https://www.selenium.dev/selenium/web/web-form.html");
