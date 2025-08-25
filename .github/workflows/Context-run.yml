@@ -1,0 +1,102 @@
+name: Learn GitHub Contexts
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        java: [8, 11, 17]
+        browser: [chrome, firefox]
+  show-contexts:
+    runs-on: ${{ matrix.os }}
+    
+    env:
+      MY_ENV_VAR: "Hello from ENV"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show github context
+        run: |
+          echo "Repository: ${{ github.repository }}"
+          echo "Actor: ${{ github.actor }}"
+          echo "Event: ${{ github.event_name }}"
+          echo "SHA: ${{ github.sha }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Run ID: ${{ github.run_id }}"
+          echo "Run Number: ${{ github.run_number }}"
+          echo "Event Path: ${{ github.event_path }}"
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.java }}
+
+      - name: Run tests
+        run: |
+          echo "Running on OS=${{ matrix.os }}, Java=${{ matrix.java }}, Browser=${{ matrix.browser }}"
+          mvn test
+      
+      - name: Show runner context
+        run: |
+          echo "Runner OS: ${{ runner.os }}"
+          echo "Runner Arch: ${{ runner.arch }}"
+          echo "Runner Name: ${{ runner.name }}"
+          echo "Temp Directory: ${{ runner.temp }}"
+          echo "Tool Cache: ${{ runner.tool_cache }}"
+
+      - name: Show job context
+        run: |
+          echo "Job Status: ${{ job.status }}"
+
+      - name: Show steps context (previous step result)
+        id: step1
+        run: echo "my-output=success" >> $GITHUB_OUTPUT
+
+      - name: Read step output
+        run: |
+          echo "Output of step1: ${{ steps.step1.outputs.my-output }}"
+
+      - name: Show environment variables
+        run: |
+          echo "Env Var (from workflow env): $MY_ENV_VAR"
+          echo "Env Var (from context): ${{ env.MY_ENV_VAR }}"
+
+      - name: Show matrix context (if defined)
+        if: ${{ matrix != null }}
+        run: |
+          echo "Matrix OS: ${{ matrix.os }}"
+          echo "Matrix Node: ${{ matrix.node-version }}"
+
+      - name: Show secrets context (mask applied automatically)
+        run: |
+          echo "Secret Value: ${{ secrets.MY_SECRET || 'No secret set' }}"
+
+      - name: Dump all github context (JSON)
+        run: |
+          echo '${{ toJson(github) }}'
+
+      - name: Dump all job context (JSON)
+        run: |
+          echo '${{ toJson(job) }}'
+
+      - name: Dump all runner context (JSON)
+        run: |
+          echo '${{ toJson(runner) }}'
+
+      - name: Dump all env context (JSON)
+        run: |
+          echo '${{ toJson(env) }}'
