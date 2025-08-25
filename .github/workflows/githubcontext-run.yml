@@ -52,6 +52,16 @@ jobs:
           echo "Temp Directory: ${{ runner.temp }}"
           echo "Tool Cache: ${{ runner.tool_cache }}"
 
+  show-contexts-2:
+    needs: [show-contexts]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        java: [8, 11, 17]
+        browser: [chrome, firefox]
+
+    steps:
       - name: Show job context
         run: |
           echo "Job Status: ${{ job.status }}"
