@@ -28,6 +28,7 @@ allure-results/     # Allure test results
 allure-report/
 cucumber-reports/
 extent-reports/
+reports/
 
 # ------------------------
 # Temp files
