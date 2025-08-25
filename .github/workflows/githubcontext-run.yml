@@ -6,18 +6,15 @@ on:
       - main
   pull_request:
 
-
 jobs:
-  build:
+  show-contexts:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         java: [8, 11, 17]
         browser: [chrome, firefox]
-  show-contexts:
-    runs-on: ${{ matrix.os }}
-    
+
     env:
       MY_ENV_VAR: "Hello from ENV"
 
@@ -36,9 +33,6 @@ jobs:
           echo "Run ID: ${{ github.run_id }}"
           echo "Run Number: ${{ github.run_number }}"
           echo "Event Path: ${{ github.event_path }}"
-
-      - name: Checkout code
-        uses: actions/checkout@v4
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -79,7 +73,8 @@ jobs:
         if: ${{ matrix != null }}
         run: |
           echo "Matrix OS: ${{ matrix.os }}"
-          echo "Matrix Node: ${{ matrix.node-version }}"
+          echo "Matrix Java: ${{ matrix.java }}"
+          echo "Matrix Browser: ${{ matrix.browser }}"
 
       - name: Show secrets context (mask applied automatically)
         run: |
